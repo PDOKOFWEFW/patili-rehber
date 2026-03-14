@@ -2,7 +2,6 @@
 title: 'Evinizi Kurtaracak En İyi 5 Kedi Tırmalama Tahtası'
 description: 'Kedinizin enerjisini atabileceği ve mobilyalarınızı koruyacak fiyat/performans ürünlerini inceledik.'
 pubDate: 'Mar 15 2026'
-heroImage: '/blog-placeholder-1.jpg'
 ---
 
 Kediler tırmalamaya bayılır, bu onların doğasında var! Ancak bu durum yeni aldığınız koltuğun sonu olmak zorunda değil. 
