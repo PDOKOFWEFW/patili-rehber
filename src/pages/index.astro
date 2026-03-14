@@ -1,13 +1,30 @@
-<main class="max-w-4xl mx-auto px-4 py-8">
-  <h1 class="text-4xl md:text-5xl font-extrabold text-orange-600 mb-6">
-    Patili Rehber'e Hoş Geldiniz! 🐾
-  </h1>
-  
-  <p class="text-lg text-gray-700 mb-4 leading-relaxed">
-    Kedi ve köpekleriniz için en iyi ürünleri, mamaları ve aksesuarları tarafsızca inceliyoruz. Sizin için en doğru seçimi yapmanıza yardımcı olmak için buradayız.
-  </p>
-  
-  <p class="text-lg text-gray-700 mb-8">
-    Tüylü dostlarımızın hayatını güzelleştirecek, sizin de bütçenizi koruyacak incelemelerimiz için blog yazılarımıza göz atın!
-  </p>
-</main>
+---
+import BaseHead from '../components/BaseHead.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
+---
+
+<!doctype html>
+<html lang="tr">
+	<head>
+		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+	</head>
+	<body>
+		<Header />
+		<main class="max-w-4xl mx-auto px-4 py-8">
+			<h1 class="text-4xl md:text-5xl font-extrabold text-orange-600 mb-6">
+				Patili Rehber'e Hoş Geldiniz! 🐾
+			</h1>
+			
+			<p class="text-lg text-gray-700 mb-4 leading-relaxed">
+				Kedi ve köpekleriniz için en iyi ürünleri, mamaları ve aksesuarları tarafsızca inceliyoruz. Sizin için en doğru seçimi yapmanıza yardımcı olmak için buradayız.
+			</p>
+			
+			<p class="text-lg text-gray-700 mb-8">
+				Tüylü dostlarımızın hayatını güzelleştirecek, sizin de bütçenizi koruyacak incelemelerimiz için blog yazılarımıza göz atın!
+			</p>
+		</main>
+		<Footer />
+	</body>
+</html>
