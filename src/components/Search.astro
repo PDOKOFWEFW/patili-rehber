@@ -1,0 +1,20 @@
+<div class="search-container" style="margin: 20px 0; text-align: center;">
+    <input 
+        type="text" 
+        id="searchInput" 
+        placeholder="Ürün veya marka ara... (Örn: Somonlu, Kedi Yatağı)" 
+        style="padding: 12px 20px; width: 80%; max-width: 500px; border-radius: 25px; border: 2px solid #ea580c; outline: none;"
+    />
+</div>
+
+<script is:inline>
+    document.getElementById('searchInput')?.addEventListener('input', (e) => {
+        const term = e.target.value.toLowerCase();
+        const posts = document.querySelectorAll('.post-card, .post-list li'); // Kartları bul
+        
+        posts.forEach(post => {
+            const text = post.innerText.toLowerCase();
+            post.style.display = text.includes(term) ? 'flex' : 'none';
+        });
+    });
+</script>

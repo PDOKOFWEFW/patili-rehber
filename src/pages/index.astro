@@ -5,12 +5,13 @@ import Footer from '../components/Footer.astro';
 import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
 import { getCollection } from 'astro:content';
 import FormattedDate from '../components/FormattedDate.astro';
+// 1. ARAMA BİLEŞENİNİ BURAYA EKLEDİK (Dosyayı oluşturduğunu varsayıyorum)
+import Search from '../components/Search.astro';
 
 const posts = (await getCollection('blog')).sort(
 	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
 );
 
-// Ana sayfada görünecek sabit logonun yolu
 const SABIT_LOGO = "/logo.png";
 ---
 
@@ -20,7 +21,7 @@ const SABIT_LOGO = "/logo.png";
 		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
 		<style>
 			.container { max-width: 1000px; margin: 0 auto; padding: 40px 20px; font-family: system-ui, sans-serif; }
-			.hero { margin-bottom: 60px; }
+			.hero { margin-bottom: 40px; } /* Boşluğu biraz daralttık */
 			.hero h1 { font-size: 3rem; color: #ea580c; margin-bottom: 10px; }
 			.hero p { font-size: 1.25rem; color: #4b5563; }
 			.post-card { 
@@ -47,10 +48,15 @@ const SABIT_LOGO = "/logo.png";
 				<h1>Patili Rehber 🐾</h1>
 				<p>Tüylü dostlarınız için en iyi ürün incelemeleri ve tavsiyeler.</p>
 			</section>
+
+			<div style="margin-bottom: 50px;">
+				<Search />
+			</div>
 			
 			<section>
 				<h2 style="margin-bottom: 30px; font-size: 1.5rem; color: #111827;">Son İncelemeler</h2>
 				{posts.map((post) => (
+					// 'post-card' sınıfı sayesinde arama scriptimiz bunları bulup gizleyebilecek
 					<a href={`/blog/${post.id}/`} class="post-card">
 						<img src={SABIT_LOGO} alt={post.data.title} class="post-image" />
 						<div class="post-content">
