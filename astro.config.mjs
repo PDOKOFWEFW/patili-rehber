@@ -1,12 +1,8 @@
 import { defineConfig } from 'astro/config';
-import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
-import tailwindcss from '@tailwindcss/vite';
 
 export default defineConfig({
-  site: 'https://patilirehber.com',
-  integrations: [mdx(), sitemap()],
-  vite: {
-    plugins: [tailwindcss()],
-  },
+  // KENDİ SİTE LİNKİNİ YAZ:
+  site: 'https://patili-rehber.vercel.app',
+  integrations: [sitemap()],
 });
