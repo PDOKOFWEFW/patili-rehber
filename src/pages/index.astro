@@ -3,27 +3,64 @@ import BaseHead from '../components/BaseHead.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
+import { getCollection } from 'astro:content';
+import FormattedDate from '../components/FormattedDate.astro';
+
+const posts = (await getCollection('blog')).sort(
+	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+
+// Ana sayfada görünecek sabit logonun yolu
+const SABIT_LOGO = "/logo.png";
 ---
 
 <!doctype html>
 <html lang="tr">
 	<head>
 		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+		<style>
+			.container { max-width: 1000px; margin: 0 auto; padding: 40px 20px; font-family: system-ui, sans-serif; }
+			.hero { margin-bottom: 60px; }
+			.hero h1 { font-size: 3rem; color: #ea580c; margin-bottom: 10px; }
+			.hero p { font-size: 1.25rem; color: #4b5563; }
+			.post-card { 
+				display: flex; gap: 30px; background: white; border-radius: 24px; padding: 24px; 
+				border: 1px solid #f3f4f6; text-decoration: none; color: inherit; align-items: center;
+				margin-bottom: 30px; transition: all 0.3s ease; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+			}
+			.post-card:hover { transform: translateY(-5px); box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1); }
+			.post-image { 
+				width: 320px; height: 200px; object-fit: contain; 
+				background: #f8fafc; border-radius: 16px; flex-shrink: 0; 
+			}
+			.post-content h2 { margin: 10px 0; color: #111827; font-size: 1.75rem; font-weight: 800; }
+			@media (max-width: 768px) {
+				.post-card { flex-direction: column; padding: 16px; }
+				.post-image { width: 100%; height: 200px; }
+			}
+		</style>
 	</head>
-	<body>
+	<body style="background-color: #f9fafb;">
 		<Header />
-		<main class="max-w-4xl mx-auto px-4 py-8">
-			<h1 class="text-4xl md:text-5xl font-extrabold text-orange-600 mb-6">
-				Patili Rehber'e Hoş Geldiniz! 🐾
-			</h1>
+		<main class="container">
+			<section class="hero">
+				<h1>Patili Rehber 🐾</h1>
+				<p>Tüylü dostlarınız için en iyi ürün incelemeleri ve tavsiyeler.</p>
+			</section>
 			
-			<p class="text-lg text-gray-700 mb-4 leading-relaxed">
-				Kedi ve köpekleriniz için en iyi ürünleri, mamaları ve aksesuarları tarafsızca inceliyoruz. Sizin için en doğru seçimi yapmanıza yardımcı olmak için buradayız.
-			</p>
-			
-			<p class="text-lg text-gray-700 mb-8">
-				Tüylü dostlarımızın hayatını güzelleştirecek, sizin de bütçenizi koruyacak incelemelerimiz için blog yazılarımıza göz atın!
-			</p>
+			<section>
+				<h2 style="margin-bottom: 30px; font-size: 1.5rem; color: #111827;">Son İncelemeler</h2>
+				{posts.map((post) => (
+					<a href={`/blog/${post.id}/`} class="post-card">
+						<img src={SABIT_LOGO} alt={post.data.title} class="post-image" />
+						<div class="post-content">
+							<FormattedDate date={post.data.pubDate} />
+							<h2>{post.data.title}</h2>
+							<p>{post.data.description}</p>
+						</div>
+					</a>
+				))}
+			</section>
 		</main>
 		<Footer />
 	</body>
