@@ -1,0 +1,51 @@
+---
+import { getCollection } from 'astro:content';
+import BaseHead from '../components/BaseHead.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
+
+// Sadece başlığında "kedi" geçen yazıları filtreliyoruz
+const posts = (await getCollection('blog')).filter(post => 
+    post.data.title.toLowerCase().includes('kedi')
+).sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+const SABIT_LOGO = "/logo.png";
+---
+
+<!doctype html>
+<html lang="tr">
+	<head>
+		<BaseHead title={`Kedi Ürünleri İncelemeleri - ${SITE_TITLE}`} description="Kediler için en iyi mama, oyuncak ve kum incelemeleri burada." />
+		<style>
+			.container { max-width: 1000px; margin: 0 auto; padding: 40px 20px; }
+			.post-card { 
+				display: flex; gap: 20px; background: white; border-radius: 15px; padding: 15px; 
+				margin-bottom: 20px; border: 1px solid #eee; text-decoration: none; color: inherit;
+				align-items: center; transition: transform 0.2s;
+			}
+			.post-card:hover { transform: scale(1.02); }
+			.post-card img { width: 150px; height: 100px; object-fit: contain; background: #f8fafc; border-radius: 10px; }
+			h1 { color: #ea580c; }
+		</style>
+	</head>
+	<body>
+		<Header />
+		<main class="container">
+			<h1>🐈 Kedi Ürünleri Rehberi</h1>
+			<p>{posts.length} adet inceleme bulundu.</p>
+			<div style="margin-top: 20px;">
+				{posts.map((post) => (
+					<a href={`/blog/${post.id}/`} class="post-card">
+						<img src={SABIT_LOGO} alt="" />
+						<div>
+							<h2 style="font-size: 1.2rem; margin: 0;">{post.data.title}</h2>
+							<p style="font-size: 0.9rem; color: #666;">{post.data.description}</p>
+						</div>
+					</a>
+				))}
+			</div>
+		</main>
+		<Footer />
+	</body>
+</html>
