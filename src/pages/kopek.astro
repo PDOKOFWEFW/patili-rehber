@@ -3,12 +3,13 @@ import { getCollection } from 'astro:content';
 import BaseHead from '../components/BaseHead.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
-import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
+import { SITE_TITLE } from '../consts';
 
-// Sadece başlığında "kopek" geçen yazıları filtreliyoruz
-const posts = (await getCollection('blog')).filter(post => 
-    post.data.title.toLowerCase().includes('kopek')
-).sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+// Akıllı filtreleme: Hem 'köpek' hem 'kopek' kelimelerini tarar
+const posts = (await getCollection('blog')).filter(post => {
+    const titleLower = post.data.title.toLowerCase();
+    return titleLower.includes('kopek') || titleLower.includes('köpek');
+}).sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 
 const SABIT_LOGO = "/logo.png";
 ---
@@ -16,34 +17,42 @@ const SABIT_LOGO = "/logo.png";
 <!doctype html>
 <html lang="tr">
 	<head>
-		<BaseHead title={`Köpek Ürünleri İncelemeleri - ${SITE_TITLE}`} description="Köpekler için en dayanıklı oyuncaklar ve kaliteli mama incelemeleri." />
+		<BaseHead title={`Köpek Ürünleri İncelemeleri - ${SITE_TITLE}`} description="Köpekler için en iyi mama, oyuncak ve aksesuarların detaylı incelemeleri." />
 		<style>
-			.container { max-width: 1000px; margin: 0 auto; padding: 40px 20px; }
+			.container { max-width: 1000px; margin: 0 auto; padding: 40px 20px; font-family: system-ui, sans-serif; }
 			.post-card { 
 				display: flex; gap: 20px; background: white; border-radius: 15px; padding: 15px; 
 				margin-bottom: 20px; border: 1px solid #eee; text-decoration: none; color: inherit;
-				align-items: center; transition: transform 0.2s;
+				align-items: center; transition: transform 0.2s; box-shadow: 0 2px 4px rgba(0,0,0,0.05);
 			}
-			.post-card:hover { transform: scale(1.02); }
-			.post-card img { width: 150px; height: 100px; object-fit: contain; background: #f8fafc; border-radius: 10px; }
-			h1 { color: #ea580c; }
+			.post-card:hover { transform: translateY(-3px); box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); }
+			.post-card img { width: 150px; height: 100px; object-fit: contain; background: #f8fafc; border-radius: 10px; flex-shrink: 0; }
+			h1 { color: #ea580c; font-size: 2.5rem; margin-bottom: 10px; }
+			.count-tag { background: #ffedd5; color: #9a3412; padding: 4px 12px; border-radius: 20px; font-weight: bold; font-size: 0.9rem; }
 		</style>
 	</head>
-	<body>
+	<body style="background-color: #f9fafb;">
 		<Header />
 		<main class="container">
 			<h1>🐕 Köpek Ürünleri Rehberi</h1>
-			<p>{posts.length} adet inceleme bulundu.</p>
-			<div style="margin-top: 20px;">
-				{posts.map((post) => (
-					<a href={`/blog/${post.id}/`} class="post-card">
-						<img src={SABIT_LOGO} alt="" />
-						<div>
-							<h2 style="font-size: 1.2rem; margin: 0;">{post.data.title}</h2>
-							<p style="font-size: 0.9rem; color: #666;">{post.data.description}</p>
-						</div>
-					</a>
-				))}
+			<p><span class="count-tag">{posts.length} adet inceleme bulundu</span></p>
+			
+			<div style="margin-top: 30px;">
+				{posts.length > 0 ? (
+					posts.map((post) => (
+						<a href={`/blog/${post.id}/`} class="post-card">
+							<img src={SABIT_LOGO} alt={post.data.title} />
+							<div>
+								<h2 style="font-size: 1.25rem; margin: 0; color: #111827;">{post.data.title}</h2>
+								<p style="font-size: 0.95rem; color: #4b5563; margin-top: 5px;">{post.data.description}</p>
+							</div>
+						</a>
+					))
+				) : (
+					<div style="text-align: center; padding: 50px; background: white; border-radius: 20px;">
+						<p>Henüz bu kategoride içerik bulunamadı. Lütfen başlıkları kontrol edin.</p>
+					</div>
+				)}
 			</div>
 		</main>
 		<Footer />
