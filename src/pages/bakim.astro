@@ -3,50 +3,58 @@ import { getCollection } from 'astro:content';
 import BaseHead from '../components/BaseHead.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
-import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
+import { SITE_TITLE } from '../consts';
 
-// Bakım ile ilgili anahtar kelimeleri buraya ekliyoruz
-const bakimTerimleri = ['bakim', 'sampuan', 'firca', 'tirnak', 'kum', 'temizleme', 'yikama', 'hijyen'];
+// Bakım kelimesi ve türevlerini içeren geniş filtre
+const bakimTerimleri = ['bakim', 'bakım', 'sampuan', 'şampuan', 'firca', 'fırça', 'kum', 'temizleme', 'hijyen'];
 
-const posts = (await getCollection('blog')).filter(post => 
-    bakimTerimleri.some(terim => post.data.title.toLowerCase().includes(terim)) ||
-    post.data.description.toLowerCase().includes('bakım')
-).sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+const posts = (await getCollection('blog')).filter(post => {
+    const titleLower = post.data.title.toLowerCase();
+    return bakimTerimleri.some(terim => titleLower.includes(terim));
+}).sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+const SABIT_LOGO = "/logo.png";
 ---
 
 <!doctype html>
 <html lang="tr">
 	<head>
-		<BaseHead title={`Evcil Hayvan Bakım Ürünleri - ${SITE_TITLE}`} description="En iyi kedi ve köpek bakım ürünleri, şampuanlar ve hijyen malzemeleri incelemeleri." />
+		<BaseHead title={`Bakım & Hijyen Ürünleri - ${SITE_TITLE}`} description="Evcil hayvanlarınız için en iyi bakım ürünleri ve hijyen malzemeleri." />
 		<style>
-			.container { max-width: 1000px; margin: 0 auto; padding: 40px 20px; }
-			.post-list { list-style: none; padding: 0; }
+			.container { max-width: 1000px; margin: 0 auto; padding: 40px 20px; font-family: system-ui, sans-serif; }
 			.post-card { 
 				display: flex; gap: 20px; background: white; border-radius: 15px; padding: 15px; 
 				margin-bottom: 20px; border: 1px solid #eee; text-decoration: none; color: inherit;
-				align-items: center; transition: transform 0.2s;
+				align-items: center; transition: transform 0.2s; box-shadow: 0 2px 4px rgba(0,0,0,0.05);
 			}
-			.post-card:hover { transform: scale(1.02); }
-			.post-card img { width: 150px; height: 100px; object-fit: cover; border-radius: 10px; }
-			h1 { color: #ea580c; margin-bottom: 30px; }
+			.post-card:hover { transform: translateY(-3px); box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); }
+			.post-card img { width: 150px; height: 100px; object-fit: contain; background: #f8fafc; border-radius: 10px; flex-shrink: 0; }
+			h1 { color: #ea580c; font-size: 2.5rem; margin-bottom: 10px; }
+			.count-tag { background: #ffedd5; color: #9a3412; padding: 4px 12px; border-radius: 20px; font-weight: bold; font-size: 0.9rem; }
 		</style>
 	</head>
-	<body>
+	<body style="background-color: #f9fafb;">
 		<Header />
 		<main class="container">
-			<h1>Bakım & Hijyen Ürünleri</h1>
-			<p>{posts.length} adet bakım ürünü incelemesi bulundu.</p>
+			<h1>🧼 Bakım & Hijyen Rehberi</h1>
+			<p><span class="count-tag">{posts.length} adet inceleme bulundu</span></p>
 			
-			<div class="post-list">
-				{posts.map((post) => (
-					<a href={`/blog/${post.id}/`} class="post-card">
-						<img src={post.data.heroImage} alt="" />
-						<div>
-							<h2 style="font-size: 1.2rem; margin: 0;">{post.data.title}</h2>
-							<p style="font-size: 0.9rem; color: #666; margin: 5px 0 0;">{post.data.description}</p>
-						</div>
-					</a>
-				))}
+			<div style="margin-top: 30px;">
+				{posts.length > 0 ? (
+					posts.map((post) => (
+						<a href={`/blog/${post.id}/`} class="post-card">
+							<img src={SABIT_LOGO} alt={post.data.title} />
+							<div>
+								<h2 style="font-size: 1.25rem; margin: 0; color: #111827;">{post.data.title}</h2>
+								<p style="font-size: 0.95rem; color: #4b5563; margin-top: 5px;">{post.data.description}</p>
+							</div>
+						</a>
+					))
+				) : (
+					<div style="text-align: center; padding: 50px; background: white; border-radius: 20px;">
+						<p>Henüz bu kategoride içerik bulunamadı.</p>
+					</div>
+				)}
 			</div>
 		</main>
 		<Footer />
