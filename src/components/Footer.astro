@@ -2,28 +2,115 @@
 const today = new Date();
 ---
 
-<footer>
-	&copy; {today.getFullYear()} "Patili Rehber - Evcil Hayvan Ürün İncelemeleri"
-	
+<footer class="site-footer">
+	<div class="footer-container">
+		<div class="footer-grid">
+			<div class="footer-col">
+				<h3>🐾 Patili Rehber</h3>
+				<p>Tüylü dostlarınızın sağlığı, mutluluğu ve konforu için en güncel ürün incelemeleri, uzman tavsiyeleri ve tarafsız rehberler.</p>
+			</div>
+			
+			<div class="footer-col">
+				<h4>Kategoriler</h4>
+				<ul>
+					<li><a href="/kedi/">Kedi Ürünleri</a></li>
+					<li><a href="/kopek/">Köpek Ürünleri</a></li>
+					<li><a href="/bakim/">Bakım & Hijyen</a></li>
+				</ul>
+			</div>
+
+			<div class="footer-col">
+				<h4>Kurumsal</h4>
+				<ul>
+					<li><a href="/about/">Hakkımızda</a></li>
+					<li><a href="/iletisim/">İletişim</a></li>
+					<li><a href="/gizlilik-politikasi/">Gizlilik Politikası</a></li>
+				</ul>
+			</div>
+		</div>
+
+		<div class="footer-bottom">
+			&copy; {today.getFullYear()} Patili Rehber. Tüm hakları saklıdır. <br/>
+			<span class="disclaimer">Bu site Amazon ve Trendyol Gelir Ortaklığı programları üyesidir. Seçili linklerden komisyon kazanılabilir.</span>
+		</div>
+	</div>
 </footer>
+
 <style>
-	footer {
-		padding: 2em 1em 6em 1em;
-		background: linear-gradient(var(--gray-gradient)) no-repeat;
-		color: rgb(var(--gray));
-		text-align: center;
+	.site-footer {
+		background-color: #0f172a; /* Çok koyu, asil bir lacivert/siyah */
+		color: #f8fafc;
+		padding: 60px 20px 20px 20px;
+		margin-top: 80px;
+		font-family: system-ui, sans-serif;
 	}
-	.social-links {
-		display: flex;
-		justify-content: center;
-		gap: 1em;
-		margin-top: 1em;
+	.footer-container {
+		max-width: 1050px;
+		margin: 0 auto;
 	}
-	.social-links a {
+	.footer-grid {
+		display: grid;
+		grid-template-columns: 2fr 1fr 1fr;
+		gap: 40px;
+		margin-bottom: 40px;
+		border-bottom: 1px solid #1e293b;
+		padding-bottom: 40px;
+	}
+	.footer-col h3 {
+		color: #ea580c;
+		font-size: 1.5rem;
+		margin-bottom: 15px;
+	}
+	.footer-col h4 {
+		color: #f8fafc;
+		font-size: 1.1rem;
+		margin-bottom: 15px;
+		border-left: 3px solid #ea580c;
+		padding-left: 10px;
+	}
+	.footer-col p {
+		color: #94a3b8;
+		line-height: 1.6;
+		font-size: 0.95rem;
+	}
+	.footer-col ul {
+		list-style: none;
+		padding: 0;
+		margin: 0;
+	}
+	.footer-col ul li {
+		margin-bottom: 10px;
+	}
+	.footer-col ul li a {
+		color: #94a3b8;
 		text-decoration: none;
-		color: rgb(var(--gray));
+		transition: color 0.2s;
+		font-size: 0.95rem;
 	}
-	.social-links a:hover {
-		color: rgb(var(--gray-dark));
+	.footer-col ul li a:hover {
+		color: #ea580c;
+	}
+	.footer-bottom {
+		text-align: center;
+		color: #64748b;
+		font-size: 0.9rem;
+		line-height: 1.8;
+	}
+	.disclaimer {
+		font-size: 0.8rem;
+		color: #475569;
+		display: block;
+		margin-top: 10px;
+	}
+
+	@media (max-width: 768px) {
+		.footer-grid {
+			grid-template-columns: 1fr;
+			text-align: center;
+		}
+		.footer-col h4 {
+			border-left: none;
+			padding-left: 0;
+		}
 	}
 </style>
