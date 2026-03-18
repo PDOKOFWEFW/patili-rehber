@@ -1,7 +1,7 @@
 ---
 title: 'Kediler Neden Isırır ve Nasıl Engellenir?'
 description: 'Oyun oynarken aniden ısıran kedilerin psikolojisi ve bu davranışı durdurmanın yolları.'
-pubDate: '19 Mart 2026'
+pubDate: '2026-03-18'
 heroImage: '/blog-placeholder-3.jpg'
 ---
 

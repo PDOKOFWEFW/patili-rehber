@@ -1,7 +1,7 @@
 ---
 title: 'Köpeklerde Tüy Dökülmesini Azaltan 5 Altın Kural'
 description: 'Mevsimsel ve strese bağlı tüy dökülmesini durduran beslenme ve tarama teknikleri.'
-pubDate: '19 Mart 2026'
+pubDate: '2026-03-18'
 heroImage: '/blog-placeholder-4.jpg'
 ---
 

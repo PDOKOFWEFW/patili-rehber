@@ -1,7 +1,7 @@
 ---
 title: 'Evdeki Kedi Kumu Kokusu Nasıl Giderilir?'
 description: 'Kedi kumu kokusunu evden tamamen silmek için doğal yöntemler ve karbonat mucizesi.'
-pubDate: '19 Mart 2026'
+pubDate: '2026-03-18'
 heroImage: '/blog-placeholder-2.jpg'
 ---
 

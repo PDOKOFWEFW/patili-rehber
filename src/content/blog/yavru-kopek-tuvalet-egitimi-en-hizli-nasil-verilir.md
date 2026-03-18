@@ -1,7 +1,7 @@
 ---
 title: 'Yavru Köpek Tuvalet Eğitimi En Hızlı Nasıl Verilir?'
 description: 'Yavru köpeğinize evde tuvalet eğitimini 3 günde nasıl verirsiniz? Kesin çözüm ve pratik adımlar.'
-pubDate: '19 Mart 2026'
+pubDate: '2026-03-18'
 heroImage: '/blog-placeholder-1.jpg'
 ---
 

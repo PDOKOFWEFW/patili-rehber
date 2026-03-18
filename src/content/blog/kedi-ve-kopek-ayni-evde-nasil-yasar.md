@@ -1,7 +1,7 @@
 ---
 title: 'Kedi ve Köpek Aynı Evde Nasıl Yaşar?'
 description: 'Kedi ve köpeği birbirine alıştırma süreci, ilk tanışma taktikleri ve güvenli alan oluşturma.'
-pubDate: '19 Mart 2026'
+pubDate: '2026-03-18'
 heroImage: '/blog-placeholder-about.jpg'
 ---
 

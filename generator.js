@@ -3,20 +3,16 @@ import path from 'path';
 
 const klasorYolu = path.join(process.cwd(), 'src', 'content', 'blog');
 
-// 1. AŞAMA: ESKİ ÇÖP DOSYALARI SİLME (TEMİZLİK OPERASYONU)
 console.log("🧹 Eski dosyalar temizleniyor...");
 const mevcutDosyalar = fs.readdirSync(klasorYolu);
 
 mevcutDosyalar.forEach(dosya => {
-    // Sadece .md veya .mdx dosyalarını sil (klasörlere dokunma)
     if (dosya.endsWith('.md') || dosya.endsWith('.mdx')) {
         fs.unlinkSync(path.join(klasorYolu, dosya));
         console.log(`🗑️ Silindi: ${dosya}`);
     }
 });
-console.log("✨ Dükkan tertemiz oldu!\n");
 
-// 2. AŞAMA: YENİ MAKALELERİ LİSTESİ
 const makaleler = [
     {
         title: "Yavru Köpek Tuvalet Eğitimi En Hızlı Nasıl Verilir?",
@@ -45,7 +41,6 @@ const makaleler = [
     }
 ];
 
-// Başlıkları otomatik dosya ismine (slug) çeviren fonksiyon
 const slugify = (text) => {
     return text.toString().toLowerCase()
         .replace(/ğ/g, 'g').replace(/ü/g, 'u').replace(/ş/g, 's')
@@ -57,15 +52,14 @@ const slugify = (text) => {
         .replace(/-+$/, '');            
 };
 
-// 3. AŞAMA: YENİ DOSYALARI ÜRETME
-const bugun = new Date().toLocaleDateString('tr-TR', { year: 'numeric', month: 'long', day: 'numeric' });
+// ÇÖZÜM BURADA: Astro'nun hata vermemesi için (YYYY-MM-DD) evrensel tarih formatı
+const bugun = new Date().toISOString().split('T')[0];
 
 console.log("📝 Yeni SEO uyumlu dosyalar oluşturuluyor...");
 makaleler.forEach(makale => {
     const dosyaAdi = slugify(makale.title);
     const dosyaYolu = path.join(klasorYolu, `${dosyaAdi}.md`);
 
-    // Markdown (Frontmatter) Şablonu
     const icerik = `---
 title: '${makale.title}'
 description: '${makale.desc}'
@@ -91,4 +85,4 @@ Toparlayıcı bir paragraf ile yazıyı bitirin.
     console.log(`✅ Oluşturuldu: ${dosyaAdi}.md`);
 });
 
-console.log("\n🚀 Bütün operasyon saniyeler içinde tamamlandı patron! Artık sadece içerikleri doldurmak kaldı.");
+console.log("\n🚀 Operasyon tamamlandı! Astro artık bu tarihleri tanıyacak.");
