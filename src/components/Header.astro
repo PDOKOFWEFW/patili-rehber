@@ -1,59 +1,110 @@
 ---
-import { SITE_TITLE } from '../consts';
 import HeaderLink from './HeaderLink.astro';
+import { SITE_TITLE } from '../consts';
 ---
 
-<header>
-	<nav>
-    <nav>
-    <div class="internal-links">
-    	<a href="/">Ana Sayfa</a>
-   	 	<a href="/kedi/">Kedi</a>
-   		<a href="/kopek/">Köpek</a>
-    	<a href="/bakim/">Bakım</a>
-    	<a href="/about/">Hakkımızda</a>
+<header class="site-header">
+	<div class="header-container">
+		<a href="/" class="logo">
+			🐾 <span class="logo-text">Patili Rehber</span>
+		</a>
+
+		<nav class="nav-links">
+			<HeaderLink href="/">Ana Sayfa</HeaderLink>
+			<HeaderLink href="/kedi/">Kedi</HeaderLink>
+			<HeaderLink href="/kopek/">Köpek</HeaderLink>
+			<HeaderLink href="/bakim/">Bakım</HeaderLink>
+			<HeaderLink href="/about/">Hakkımızda</HeaderLink>
+		</nav>
 	</div>
-</nav>
-</nav>
 </header>
+
 <style>
-	header {
-		margin: 0;
-		padding: 0 1em;
-		background: white;
-		box-shadow: 0 2px 8px rgba(var(--black), 5%);
-	}
-	h2 {
-		margin: 0;
-		font-size: 1em;
+	/* Arka planı hafif saydam ve bulanık yapar (Cam Efekti) */
+	.site-header {
+		background: rgba(255, 255, 255, 0.85);
+		backdrop-filter: blur(12px);
+		-webkit-backdrop-filter: blur(12px);
+		position: sticky;
+		top: 0;
+		z-index: 1000;
+		border-bottom: 1px solid rgba(0,0,0,0.05);
+		box-shadow: 0 4px 20px -5px rgba(0, 0, 0, 0.05);
+		transition: all 0.3s ease;
 	}
 
-	h2 a,
-	h2 a.active {
-		text-decoration: none;
+	.header-container {
+		max-width: 1050px;
+		margin: 0 auto;
+		padding: 15px 20px;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
 	}
-	nav {
+
+	/* Logo Kısmı */
+	.logo {
 		display: flex;
 		align-items: center;
-		justify-content: space-between;
-	}
-	nav a {
-		padding: 1em 0.5em;
-		color: var(--black);
-		border-bottom: 4px solid transparent;
+		gap: 8px;
 		text-decoration: none;
+		font-size: 1.6rem;
+		font-weight: 800;
+		letter-spacing: -0.5px;
 	}
-	nav a.active {
-		text-decoration: none;
-		border-bottom-color: var(--accent);
+
+	.logo-text {
+		background: linear-gradient(135deg, #ea580c, #f97316);
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent;
 	}
-	.social-links,
-	.social-links a {
+
+	/* Menü Linkleri */
+	.nav-links {
 		display: flex;
+		gap: 10px;
+		align-items: center;
 	}
-	@media (max-width: 720px) {
-		.social-links {
-			display: none;
+
+	/* Global a etiketi yerine direkt class içindeki a'ları hedefliyoruz */
+	.nav-links :global(a) {
+		text-decoration: none;
+		color: #4b5563;
+		font-weight: 600;
+		font-size: 1rem;
+		padding: 8px 18px;
+		border-radius: 50px; /* Hap şekli */
+		transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+	}
+
+	/* Üzerine gelince (Hover) */
+	.nav-links :global(a:hover) {
+		color: #ea580c;
+		background-color: #ffedd5;
+	}
+
+	/* Aktif olan sayfa (Tıklanmış olan) */
+	.nav-links :global(a.active) {
+		color: white;
+		background-color: #ea580c;
+		box-shadow: 0 4px 10px rgba(234, 88, 12, 0.3);
+	}
+
+	/* Mobilde alt alta şık bir şekilde dizilmesi için */
+	@media (max-width: 768px) {
+		.header-container {
+			flex-direction: column;
+			gap: 15px;
+			padding: 15px 10px;
+		}
+		.nav-links {
+			gap: 5px;
+			flex-wrap: wrap;
+			justify-content: center;
+		}
+		.nav-links :global(a) {
+			padding: 6px 12px;
+			font-size: 0.95rem;
 		}
 	}
 </style>
