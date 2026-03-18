@@ -7,145 +7,172 @@ import FormattedDate from '../components/FormattedDate.astro';
 
 type Props = CollectionEntry<'blog'>['data'];
 
-const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
+const { title, description, pubDate, heroImage } = Astro.props;
 ---
 
 <html lang="tr">
 	<head>
 		<BaseHead title={title} description={description} />
 		<style>
+			/* Genel Okuma Düzeni (Medium.com Tarzı) */
 			main {
 				width: 100%;
-				max-width: 850px;
+				max-width: 800px; /* Okuma kolaylığı için ideal genişlik */
 				margin: 0 auto;
 				padding: 40px 20px;
-				font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+				font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
 			}
-			.article-header {
-				text-align: center;
-				margin-bottom: 40px;
-			}
+			
+			/* Başlık ve Görsel Alanı */
+			.article-header { margin-bottom: 30px; }
 			.title {
-				font-size: 2.8rem;
+				font-size: 2.6rem;
 				font-weight: 800;
-				color: #111827;
-				line-height: 1.2;
+				color: #0f172a;
+				line-height: 1.25;
 				margin-bottom: 15px;
+				letter-spacing: -0.5px;
 			}
-			.date-box {
+			.meta-info {
+				display: flex;
+				align-items: center;
+				gap: 15px;
 				color: #64748b;
 				font-size: 0.95rem;
-				margin-bottom: 20px;
-			}
-			/* Affiliate Uyarı Metni */
-			.affiliate-disclosure {
-				background-color: #f8fafc;
-				border: 1px solid #e2e8f0;
-				padding: 12px 20px;
-				border-radius: 8px;
-				font-size: 0.85rem;
-				color: #64748b;
-				text-align: left;
-				margin-bottom: 30px;
-				font-style: italic;
+				margin-bottom: 25px;
+				padding-bottom: 20px;
+				border-bottom: 1px solid #e2e8f0;
 			}
 			.hero-image {
 				width: 100%;
-				border-radius: 16px;
-				box-shadow: 0 10px 25px rgba(0,0,0,0.05);
-				margin-bottom: 40px;
+				border-radius: 12px;
+				margin-bottom: 30px;
+				box-shadow: 0 4px 10px rgba(0,0,0,0.05);
 			}
-			
-			/* Yazı İçi Tasarım Düzenlemeleri (Markdown için) */
+
+			/* Tıbbi Feragatname (Google SEO ve Güven İçin Şart) */
+			.medical-disclaimer {
+				background-color: #f0fdf4;
+				border-left: 4px solid #22c55e;
+				padding: 15px 20px;
+				border-radius: 0 8px 8px 0;
+				font-size: 0.9rem;
+				color: #166534;
+				margin-bottom: 30px;
+				line-height: 1.6;
+			}
+
+			/* REKLAM ALANLARI (AdSense İçin Yer Tutucular) */
+			.ad-slot {
+				background-color: #f8fafc;
+				border: 1px dashed #cbd5e1;
+				text-align: center;
+				padding: 20px;
+				margin: 40px 0;
+				color: #94a3b8;
+				font-size: 0.85rem;
+				border-radius: 8px;
+			}
+
+			/* Makale İçeriği (Tipografi) */
 			.prose {
-				font-size: 1.1rem;
+				font-size: 1.15rem; /* Göz yormayan büyük font */
 				line-height: 1.8;
 				color: #334155;
 			}
-			.prose h2 {
+			.prose :global(p) { margin-bottom: 25px; }
+			.prose :global(h2) {
 				font-size: 1.8rem;
 				color: #0f172a;
-				margin-top: 40px;
-				border-bottom: 2px solid #ffedd5;
-				padding-bottom: 10px;
+				margin-top: 50px;
+				margin-bottom: 20px;
+				font-weight: 700;
 			}
-			.prose h3 {
+			.prose :global(h3) {
 				font-size: 1.4rem;
 				color: #1e293b;
-				margin-top: 30px;
+				margin-top: 35px;
+				margin-bottom: 15px;
 			}
-			/* Harekete Geçirici Özel Buton Class'ı (Markdown içinde kullanılacak) */
-			.prose :global(.buy-btn) {
-				display: block;
-				text-align: center;
-				background: linear-gradient(135deg, #ea580c, #f97316);
-				color: white;
-				padding: 15px 30px;
-				border-radius: 50px;
-				font-size: 1.2rem;
-				font-weight: bold;
-				text-decoration: none;
-				margin: 30px auto;
-				max-width: 400px;
-				box-shadow: 0 10px 20px -5px rgba(234, 88, 12, 0.4);
-				transition: all 0.3s ease;
+			.prose :global(ul), .prose :global(ol) {
+				background: #f8fafc;
+				padding: 20px 20px 20px 40px;
+				border-radius: 8px;
+				margin-bottom: 25px;
 			}
-			.prose :global(.buy-btn:hover) {
-				transform: translateY(-3px);
-				box-shadow: 0 15px 25px -5px rgba(234, 88, 12, 0.5);
+			.prose :global(li) { margin-bottom: 10px; }
+			.prose :global(a) {
+				color: #ea580c;
+				text-decoration: underline;
+				text-decoration-thickness: 2px;
+				text-underline-offset: 4px;
 			}
+			.prose :global(strong) { color: #0f172a; }
 
-			/* Yazar Kutusu */
+			/* Yazar Kutusu (E-E-A-T için çok önemli) */
 			.author-box {
 				display: flex;
 				align-items: center;
 				gap: 20px;
 				background: #fff7ed;
-				padding: 25px;
-				border-radius: 16px;
+				padding: 30px;
+				border-radius: 12px;
 				margin-top: 60px;
 				border: 1px solid #ffedd5;
 			}
-			.author-avatar {
-				font-size: 3rem;
-				background: white;
-				padding: 10px;
-				border-radius: 50%;
-				box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+			.author-avatar { font-size: 3.5rem; }
+			.author-info h4 { margin: 0 0 5px 0; font-size: 1.3rem; color: #9a3412; }
+			.author-info p { margin: 0; font-size: 0.95rem; color: #78350f; line-height: 1.5; }
+
+			@media (max-width: 768px) {
+				.title { font-size: 2rem; }
+				.author-box { flex-direction: column; text-align: center; }
 			}
-			.author-info h4 { margin: 0 0 5px 0; font-size: 1.2rem; color: #9a3412; }
-			.author-info p { margin: 0; font-size: 0.95rem; color: #78350f; }
 		</style>
 	</head>
 
-	<body>
+	<body style="background-color: #ffffff; margin: 0;">
 		<Header />
+		
 		<main>
 			<article>
 				<div class="article-header">
 					<h1 class="title">{title}</h1>
-					<div class="date-box">
-						Son Güncelleme: <FormattedDate date={pubDate} />
+					<div class="meta-info">
+						<span>🗓️ <FormattedDate date={pubDate} /></span>
+						<span>✍️ Yazar: Burak</span>
+						<span>⏳ 4 Dk Okuma</span>
 					</div>
-					<div class="affiliate-disclosure">
-						ℹ️ <strong>Şeffaflık Bildirimi:</strong> Bu incelemedeki bağlantılar üzerinden yapacağınız alışverişlerden ufak bir komisyon kazanabiliriz. Bu durum sizin ödeyeceğiniz fiyatı etkilemez, sadece sitemizin yayın hayatına devam etmesini sağlar.
-					</div>
+					
 					{heroImage && <img class="hero-image" src={heroImage} alt={title} />}
+				</div>
+
+				<div class="medical-disclaimer">
+					<strong>⚠️ Önemli Bilgilendirme:</strong> Bu makalede yer alan bilgiler tamamen tavsiye ve rehberlik amaçlıdır. Evcil hayvanınızın ciddi bir sağlık sorunu varsa, lütfen vakit kaybetmeden uzman bir veteriner hekime danışın.
+				</div>
+
+				<div class="ad-slot">
+					[ Google AdSense Reklam Alanı - Üst ]
 				</div>
 				
 				<div class="prose">
 					<slot />
 				</div>
 
+				<div class="ad-slot">
+					[ Google AdSense Reklam Alanı - Alt ]
+				</div>
+
 				<div class="author-box">
-					<div class="author-avatar">👨‍💻</div>
+					<div class="author-avatar">🧑‍💻</div>
 					<div class="author-info">
-						<h4>Burak | Pet Ürünleri İnceleme Uzmanı</h4>
-						<p>Tüylü dostlarımızın sağlığı ve mutluluğu için yüzlerce ürünü test ediyor, tarafsız ve detaylı rehberler hazırlıyorum. Sorularınız için yorum bırakabilirsiniz!</p>
+						<h4>Burak Hakkında</h4>
+						<p>Evcil hayvanların dünyasını anlamak ve onların hayat kalitesini artırmak için yıllardır araştırıyor ve yazıyorum. Amacım, patili dostlarınızla daha sağlıklı ve mutlu bir ömür geçirmenize yardımcı olmak.</p>
 					</div>
 				</div>
 			</article>
 		</main>
+		
 		<Footer />
 	</body>
 </html>
