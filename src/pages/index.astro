@@ -1,16 +1,14 @@
 ---
+import { getCollection } from 'astro:content';
 import BaseHead from '../components/BaseHead.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
-import { getCollection } from 'astro:content';
-import FormattedDate from '../components/FormattedDate.astro';
-// 1. ARAMA BİLEŞENİNİ BURAYA EKLEDİK (Dosyayı oluşturduğunu varsayıyorum)
-import Search from '../components/Search.astro';
 
-const posts = (await getCollection('blog')).sort(
+// Bütün yazıları çek ve en yeni 15 tanesini ana sayfada göster
+const allPosts = (await getCollection('blog')).sort(
 	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
-);
+).slice(0, 15);
 
 const SABIT_LOGO = "/logo.png";
 ---
@@ -18,56 +16,156 @@ const SABIT_LOGO = "/logo.png";
 <!doctype html>
 <html lang="tr">
 	<head>
-		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+		<BaseHead title={`Evcil Hayvan Ürün İncelemeleri - ${SITE_TITLE}`} description="En iyi kedi, köpek ve bakım ürünleri incelemeleri." />
 		<style>
-			.container { max-width: 1000px; margin: 0 auto; padding: 40px 20px; font-family: system-ui, sans-serif; }
-			.hero { margin-bottom: 40px; } /* Boşluğu biraz daralttık */
-			.hero h1 { font-size: 3rem; color: #ea580c; margin-bottom: 10px; }
-			.hero p { font-size: 1.25rem; color: #4b5563; }
-			.post-card { 
-				display: flex; gap: 30px; background: white; border-radius: 24px; padding: 24px; 
-				border: 1px solid #f3f4f6; text-decoration: none; color: inherit; align-items: center;
-				margin-bottom: 30px; transition: all 0.3s ease; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+			/* Hero Section (Karşılama Ekranı) - Müşteriyi Tavlama Alanı */
+			.hero {
+				background: linear-gradient(135deg, #fff7ed 0%, #ffedd5 100%);
+				padding: 70px 20px;
+				text-align: center;
+				border-bottom: 1px solid #fed7aa;
 			}
-			.post-card:hover { transform: translateY(-5px); box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1); }
-			.post-image { 
-				width: 320px; height: 200px; object-fit: contain; 
-				background: #f8fafc; border-radius: 16px; flex-shrink: 0; 
+			.hero h1 {
+				font-size: 3.2rem;
+				color: #111827;
+				margin-bottom: 15px;
+				letter-spacing: -1px;
+				font-weight: 800;
 			}
-			.post-content h2 { margin: 10px 0; color: #111827; font-size: 1.75rem; font-weight: 800; }
+			.hero h1 span {
+				color: #ea580c;
+			}
+			.hero p {
+				font-size: 1.2rem;
+				color: #4b5563;
+				max-width: 650px;
+				margin: 0 auto 35px auto;
+				line-height: 1.6;
+			}
+
+			/* Dev Arama Çubuğu */
+			.search-wrapper {
+				max-width: 650px;
+				margin: 0 auto;
+				position: relative;
+			}
+			.search-input {
+				width: 100%;
+				padding: 18px 25px;
+				font-size: 1.15rem;
+				border: 2px solid #fdba74;
+				border-radius: 50px;
+				outline: none;
+				box-shadow: 0 10px 25px -5px rgba(234, 88, 12, 0.15);
+				transition: all 0.3s ease;
+			}
+			.search-input:focus {
+				border-color: #ea580c;
+				box-shadow: 0 15px 30px -5px rgba(234, 88, 12, 0.25);
+				transform: translateY(-2px);
+			}
+
+			/* İçerik Alanı */
+			.container { max-width: 1000px; margin: 50px auto; padding: 0 20px; font-family: system-ui, sans-serif;}
+			.section-title { font-size: 1.8rem; color: #111827; margin-bottom: 30px; display: flex; align-items: center; gap: 10px; }
+
+			/* Premium Kart Tasarımı */
+			.post-card {
+				display: flex;
+				gap: 20px;
+				background: white;
+				border-radius: 16px;
+				padding: 20px;
+				margin-bottom: 25px;
+				border: 1px solid #f1f5f9;
+				text-decoration: none;
+				color: inherit;
+				align-items: center;
+				transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+				box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+			}
+			.post-card:hover {
+				transform: translateY(-5px);
+				box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
+				border-color: #fed7aa;
+			}
+			.post-card img {
+				width: 160px; height: 110px; object-fit: contain; background: #f8fafc; border-radius: 12px; flex-shrink: 0;
+			}
+			.card-content { flex-grow: 1; }
+			.card-title { font-size: 1.35rem; margin: 0 0 10px 0; color: #111827; line-height: 1.4; font-weight: 700;}
+			.card-desc { font-size: 1rem; color: #64748b; margin: 0; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+			
+			/* Harekete Geçirici Buton (İşte Para Kazandıran Kısım) */
+			.read-btn {
+				background-color: #fff7ed;
+				color: #ea580c;
+				padding: 10px 20px;
+				border-radius: 50px;
+				font-weight: 700;
+				font-size: 0.95rem;
+				white-space: nowrap;
+				transition: all 0.3s;
+				border: 2px solid #ffedd5;
+			}
+			.post-card:hover .read-btn { background-color: #ea580c; color: white; border-color: #ea580c; }
+
 			@media (max-width: 768px) {
-				.post-card { flex-direction: column; padding: 16px; }
-				.post-image { width: 100%; height: 200px; }
+				.hero h1 { font-size: 2.2rem; }
+				.post-card { flex-direction: column; align-items: flex-start; }
+				.post-card img { width: 100%; height: 180px; }
+				.read-btn { width: 100%; text-align: center; margin-top: 10px; }
 			}
 		</style>
 	</head>
-	<body style="background-color: #f9fafb;">
+	<body style="background-color: #f8fafc; margin: 0;">
 		<Header />
-		<main class="container">
-			<section class="hero">
-				<h1>Patili Rehber 🐾</h1>
-				<p>Tüylü dostlarınız için en iyi ürün incelemeleri ve tavsiyeler.</p>
-			</section>
-
-			<div style="margin-bottom: 50px;">
-				<Search />
-			</div>
+		
+		<section class="hero">
+			<h1>Tüylü Dostunuz İçin <span>En İyisini</span> Bulun</h1>
+			<p>2026'nın en güvenilir kedi, köpek ve bakım ürünü incelemeleri. Onlarca ürünü eledik, sadece en iyileri sizin için listeledik.</p>
 			
-			<section>
-				<h2 style="margin-bottom: 30px; font-size: 1.5rem; color: #111827;">Son İncelemeler</h2>
-				{posts.map((post) => (
-					// 'post-card' sınıfı sayesinde arama scriptimiz bunları bulup gizleyebilecek
+			<div class="search-wrapper">
+				<input type="text" id="searchInput" class="search-input" placeholder="Ürün veya kategori ara... (Örn: Somonlu, Tuvalet)">
+			</div>
+		</section>
+
+		<main class="container">
+			<h2 class="section-title">🔥 En Yeni İncelemeler</h2>
+			
+			<div id="postsContainer">
+				{allPosts.map((post) => (
 					<a href={`/blog/${post.id}/`} class="post-card">
-						<img src={SABIT_LOGO} alt={post.data.title} class="post-image" />
-						<div class="post-content">
-							<FormattedDate date={post.data.pubDate} />
-							<h2>{post.data.title}</h2>
-							<p>{post.data.description}</p>
+						<img src={SABIT_LOGO} alt={post.data.title} />
+						<div class="card-content">
+							<h3 class="card-title">{post.data.title}</h3>
+							<p class="card-desc">{post.data.description}</p>
 						</div>
+						<div class="read-btn">İncelemeyi Oku ➔</div>
 					</a>
 				))}
-			</section>
+			</div>
 		</main>
+		
 		<Footer />
+
+		<script is:inline>
+			const searchInput = document.getElementById('searchInput');
+			const posts = document.querySelectorAll('.post-card');
+
+			if (searchInput) {
+				searchInput.addEventListener('input', (e) => {
+					const term = e.target.value.toLowerCase();
+					posts.forEach(post => {
+						const text = post.innerText.toLowerCase();
+						post.style.display = text.includes(term) ? 'flex' : 'none';
+						
+						if(window.innerWidth <= 768 && text.includes(term)) {
+							post.style.display = 'flex';
+						}
+					});
+				});
+			}
+		</script>
 	</body>
 </html>
