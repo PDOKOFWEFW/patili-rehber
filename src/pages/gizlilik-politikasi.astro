@@ -1,0 +1,51 @@
+---
+import BaseHead from '../components/BaseHead.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { SITE_TITLE } from '../consts';
+---
+
+<!doctype html>
+<html lang="tr">
+	<head>
+		<BaseHead title={`Gizlilik Politikası - ${SITE_TITLE}`} description="Patili Rehber gizlilik politikası ve çerez kullanım şartları." />
+		<style>
+			.legal-container {
+				max-width: 800px;
+				margin: 50px auto;
+				padding: 40px;
+				background: white;
+				border-radius: 16px;
+				box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+				font-family: system-ui, sans-serif;
+				line-height: 1.8;
+				color: #334155;
+			}
+			h1 { color: #0f172a; font-size: 2.2rem; margin-bottom: 30px; border-bottom: 2px solid #ea580c; padding-bottom: 10px; display: inline-block;}
+			h2 { color: #1e293b; font-size: 1.4rem; margin-top: 30px; }
+			p { margin-bottom: 15px; }
+			body { background-color: #f8fafc; margin: 0; }
+		</style>
+	</head>
+	<body>
+		<Header />
+		<main class="legal-container">
+			<h1>Gizlilik Politikası ve Gelir Ortaklığı Bildirimi</h1>
+			
+			<p><strong>Son Güncelleme:</strong> 19 Mart 2026</p>
+
+			<h2>1. Gelir Ortaklığı (Affiliate) Bildirimi</h2>
+			<p>Patili Rehber (patili-rehber.vercel.app), çeşitli evcil hayvan ürünlerini inceleyen ve tavsiye eden bağımsız bir platformdur. Sitemizdeki bazı bağlantılar "gelir ortaklığı" (affiliate) linkleri olabilir. Bu bağlantılar üzerinden yaptığınız alışverişlerden sitemiz küçük bir komisyon kazanabilir. Bu durum, sizin ödeyeceğiniz nihai fiyatı kesinlikle etkilemez veya artırmaz.</p>
+			
+			<h2>2. Çerezler (Cookies) ve Kullanıcı Verileri</h2>
+			<p>Sitemiz, ziyaretçi deneyimini iyileştirmek, trafik analizi yapmak (Google Analytics) ve size uygun içerikler sunmak amacıyla çerezler kullanmaktadır. Çerezler tarayıcınız üzerinden kapatılabilir, ancak bu durum sitenin bazı fonksiyonlarının çalışmasını etkileyebilir.</p>
+
+			<h2>3. Üçüncü Taraf Bağlantılar</h2>
+			<p>Sitemizde yayınlanan incelemelerde Amazon, Trendyol veya diğer e-ticaret sitelerine yönlendiren harici bağlantılar bulunmaktadır. Bu sitelerin kendi gizlilik politikaları vardır ve Patili Rehber, bu harici sitelerin içeriklerinden veya güvenlik uygulamalarından sorumlu tutulamaz.</p>
+
+			<h2>4. İletişim</h2>
+			<p>Gizlilik politikamızla ilgili her türlü soru ve öneriniz için bizimle iletişime geçebilirsiniz. Tüm ürün değerlendirmelerimiz tamamen kendi araştırmalarımıza ve kullanıcı deneyimlerine dayanmaktadır.</p>
+		</main>
+		<Footer />
+	</body>
+</html>
