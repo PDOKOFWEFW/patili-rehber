@@ -3,35 +3,147 @@ import type { CollectionEntry } from 'astro:content';
 import BaseHead from '../components/BaseHead.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import FormattedDate from '../components/FormattedDate.astro';
 
-// Buradaki Props tanımı Markdown'daki heroImage'ı yakalar
 type Props = CollectionEntry<'blog'>['data'];
 
-const { title, description, heroImage } = Astro.props;
+const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
 ---
 
 <html lang="tr">
 	<head>
 		<BaseHead title={title} description={description} />
+		<style>
+			main {
+				width: 100%;
+				max-width: 850px;
+				margin: 0 auto;
+				padding: 40px 20px;
+				font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+			}
+			.article-header {
+				text-align: center;
+				margin-bottom: 40px;
+			}
+			.title {
+				font-size: 2.8rem;
+				font-weight: 800;
+				color: #111827;
+				line-height: 1.2;
+				margin-bottom: 15px;
+			}
+			.date-box {
+				color: #64748b;
+				font-size: 0.95rem;
+				margin-bottom: 20px;
+			}
+			/* Affiliate Uyarı Metni */
+			.affiliate-disclosure {
+				background-color: #f8fafc;
+				border: 1px solid #e2e8f0;
+				padding: 12px 20px;
+				border-radius: 8px;
+				font-size: 0.85rem;
+				color: #64748b;
+				text-align: left;
+				margin-bottom: 30px;
+				font-style: italic;
+			}
+			.hero-image {
+				width: 100%;
+				border-radius: 16px;
+				box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+				margin-bottom: 40px;
+			}
+			
+			/* Yazı İçi Tasarım Düzenlemeleri (Markdown için) */
+			.prose {
+				font-size: 1.1rem;
+				line-height: 1.8;
+				color: #334155;
+			}
+			.prose h2 {
+				font-size: 1.8rem;
+				color: #0f172a;
+				margin-top: 40px;
+				border-bottom: 2px solid #ffedd5;
+				padding-bottom: 10px;
+			}
+			.prose h3 {
+				font-size: 1.4rem;
+				color: #1e293b;
+				margin-top: 30px;
+			}
+			/* Harekete Geçirici Özel Buton Class'ı (Markdown içinde kullanılacak) */
+			.prose :global(.buy-btn) {
+				display: block;
+				text-align: center;
+				background: linear-gradient(135deg, #ea580c, #f97316);
+				color: white;
+				padding: 15px 30px;
+				border-radius: 50px;
+				font-size: 1.2rem;
+				font-weight: bold;
+				text-decoration: none;
+				margin: 30px auto;
+				max-width: 400px;
+				box-shadow: 0 10px 20px -5px rgba(234, 88, 12, 0.4);
+				transition: all 0.3s ease;
+			}
+			.prose :global(.buy-btn:hover) {
+				transform: translateY(-3px);
+				box-shadow: 0 15px 25px -5px rgba(234, 88, 12, 0.5);
+			}
+
+			/* Yazar Kutusu */
+			.author-box {
+				display: flex;
+				align-items: center;
+				gap: 20px;
+				background: #fff7ed;
+				padding: 25px;
+				border-radius: 16px;
+				margin-top: 60px;
+				border: 1px solid #ffedd5;
+			}
+			.author-avatar {
+				font-size: 3rem;
+				background: white;
+				padding: 10px;
+				border-radius: 50%;
+				box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+			}
+			.author-info h4 { margin: 0 0 5px 0; font-size: 1.2rem; color: #9a3412; }
+			.author-info p { margin: 0; font-size: 0.95rem; color: #78350f; }
+		</style>
 	</head>
-	<body style="background-color: #f9fafb;">
+
+	<body>
 		<Header />
-		<main style="max-width: 800px; margin: 0 auto; padding: 20px;">
+		<main>
 			<article>
-				<div class="hero-image" style="margin-bottom: 2rem;">
-					{heroImage && (
-						<img 
-							src={heroImage} 
-							alt={title} 
-							style="width: 100%; border-radius: 20px; box-shadow: 0 10px 15px rgba(0,0,0,0.1); object-fit: cover; max-height: 400px;" 
-						/>
-					)}
+				<div class="article-header">
+					<h1 class="title">{title}</h1>
+					<div class="date-box">
+						Son Güncelleme: <FormattedDate date={pubDate} />
+					</div>
+					<div class="affiliate-disclosure">
+						ℹ️ <strong>Şeffaflık Bildirimi:</strong> Bu incelemedeki bağlantılar üzerinden yapacağınız alışverişlerden ufak bir komisyon kazanabiliriz. Bu durum sizin ödeyeceğiniz fiyatı etkilemez, sadece sitemizin yayın hayatına devam etmesini sağlar.
+					</div>
+					{heroImage && <img class="hero-image" src={heroImage} alt={title} />}
 				</div>
 				
 				<div class="prose">
-					<h1 style="font-size: 2.5rem; color: #111827;">{title}</h1>
-					<hr style="margin: 2rem 0;" />
-					<slot /> </div>
+					<slot />
+				</div>
+
+				<div class="author-box">
+					<div class="author-avatar">👨‍💻</div>
+					<div class="author-info">
+						<h4>Burak | Pet Ürünleri İnceleme Uzmanı</h4>
+						<p>Tüylü dostlarımızın sağlığı ve mutluluğu için yüzlerce ürünü test ediyor, tarafsız ve detaylı rehberler hazırlıyorum. Sorularınız için yorum bırakabilirsiniz!</p>
+					</div>
+				</div>
 			</article>
 		</main>
 		<Footer />
